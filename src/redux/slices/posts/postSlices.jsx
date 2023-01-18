@@ -17,7 +17,12 @@ export const createpostAction = createAsyncThunk(
     };
     try {
         //http call
-        const {data}= await axios.post(`${baseUrl}/api/posts`,post,config)
+        const formData = new FormData()
+        formData.append('title',post?.title)
+        formData.append('description',post?.description)
+        formData.append('category',post?.category?.label)
+        formData.append('image',post?.image)
+        const {data}= await axios.post(`${baseUrl}/api/posts`,formData,config)
         return data;
     } catch (error) {
         if(!error?.response) throw error;
@@ -30,7 +35,7 @@ export const createpostAction = createAsyncThunk(
 
 const postSlice = createSlice({
     name:'post',
-    initialState:{post:20},
+    initialState:{},
     extraReducers:(builder)=>{
         builder.addCase(createpostAction.pending,(state,action)=>{
             state.loading = true;
