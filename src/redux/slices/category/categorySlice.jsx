@@ -4,6 +4,7 @@ import { baseUrl } from "../../../utils/baseURL";
 
 //action to redirect
 const resetEditAction = createAction("category/reset")
+const resetDeleteAction = createAction("category/delete-reset")
 
 //action
 export const createCategoryAction = createAsyncThunk(
@@ -118,6 +119,8 @@ export const deleteCategoriesAction = createAsyncThunk(
         
         config
       );
+      // dispatch action for redirect after deleting
+      dispatch(resetDeleteAction())
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -220,8 +223,13 @@ const categorySlices = createSlice({
       state.loading = true;
 
     })
+        //dispatching for redirect
+    builder.addCase(resetDeleteAction,(state,action)=>{
+      state.isDeleted= true
+    })
     builder.addCase(deleteCategoriesAction.fulfilled,(state,action)=>{
       state.deletedCategory = action?.payload;
+      state.isDeleted= false;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
