@@ -3,8 +3,9 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector} from "react-redux";
 import { fetchCategoryAction,updateCategoriesAction,deleteCategoriesAction } from "../../redux/slices/category/categorySlice";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import { Navigate,useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+
 
 
 //Form schema
@@ -13,6 +14,7 @@ const formSchema = Yup.object({
 });
 
 const UpdateCategory = () => {
+  const navigate = useNavigate()
   const {id} = useParams()
   const dispatch = useDispatch();
   
@@ -23,7 +25,9 @@ const UpdateCategory = () => {
   // get data from store
   const state = useSelector((state) => state?.category);
 
-  const { loading, appErr, serverErr, category } = state;
+  const { loading, appErr, serverErr, category,isEdited } = state;
+
+  console.log(state);
   
   //formik
   const formik = useFormik({
@@ -40,7 +44,8 @@ const UpdateCategory = () => {
     validationSchema: formSchema,
   });
   
-  
+  //redirect
+  if(isEdited) return navigate("/category-list")
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">

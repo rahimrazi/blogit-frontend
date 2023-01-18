@@ -1,6 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../../utils/baseURL";
+
+//action to redirect
+const resetEditAction = createAction("category/reset")
 
 //action
 export const createCategoryAction = createAsyncThunk(
@@ -83,6 +86,8 @@ export const updateCategoriesAction = createAsyncThunk(
         
         config
       );
+      //dispatch action to reset the updated data inorder to redirect properly
+      dispatch(resetEditAction())
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -194,8 +199,13 @@ const categorySlices = createSlice({
       state.loading = true;
 
     })
+    //dispatch action 
+    builder.addCase(resetEditAction,(state,action)=>{
+      state.isEdited = true
+    })
     builder.addCase(updateCategoriesAction.fulfilled,(state,action)=>{
       state.updateCategory = action?.payload;
+      state.isEdited = false
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
