@@ -4,19 +4,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchPostsAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
+import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
+import LoadingComponent from "../../utils/LoadingComponent";
 
 export default function PostsList() {
   //dispatch
   const dispatch = useDispatch();
+  //fetch post
   useEffect(() => {
     dispatch(fetchPostsAction());
+  }, [dispatch]);
+  //fetch categories
+  useEffect(() => {
+    dispatch(fetchCategoriesAction());
   }, [dispatch]);
 
   //select post from store
   const post = useSelector(state => state?.post);
-
   const { postLists, loading, appErr, serverErr } = post;
-  console.log(postLists);
+
+  //select categories from store
+  const category = useSelector(state => state?.category);
+  const {
+    categoryList,
+    loading: catLoading,
+    appErr: catAppErr,
+    serverErr: catServerErr,
+  } = category;
+
   return (
     <>
       <section>
@@ -45,21 +60,23 @@ export default function PostsList() {
                     Categories
                   </h4>
                   <ul>
-                    <div>Loading</div>
-
-                    <div className="text-red-400 text-base">
-                      Categories Error goes here
-                    </div>
-
-                    <div className="text-xl text-gray-100 text-center">
-                      No category
-                    </div>
-
-                    <li>
-                      <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
-                        {/* {category?.title} */} category List
-                      </p>
-                    </li>
+                    {catLoading ? (
+                      <LoadingComponent />
+                    ) : catAppErr || catServerErr ? (
+                      <h1>
+                        {catServerErr} {catAppErr}
+                      </h1>
+                    ) : categoryList?.lenght <= 0 ? (
+                      <h1>No Category Found</h1>
+                    ) : (
+                      categoryList?.map(category => (
+                        <li>
+                          <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
+                            {category?.title}
+                          </p>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </div>
@@ -67,10 +84,12 @@ export default function PostsList() {
                 {/* Post goes here */}
 
                 {loading ? (
-                  <h1>Loading...</h1>
+                  <LoadingComponent />
                 ) : appErr || serverErr ? (
-                  <h1>Err</h1>
-                ) : postLists?.length <= 0 ? (
+                  <h1>
+                    {serverErr} {appErr}
+                  </h1>
+                ) : postLists?.lenght <= 0 ? (
                   <h1>No Post Found</h1>
                 ) : (
                   postLists?.map(post => (
@@ -93,7 +112,7 @@ export default function PostsList() {
                               <ThumbUpIcon className="h-7 w-7 text-indigo-600 cursor-pointer" />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.likes?.length ? post?.likes?.length : 0}
+                              {post?.likes?.lenght ? post?.likes?.lenght : 0}
                             </div>
                           </div>
                           {/* Dislike */}
@@ -102,8 +121,8 @@ export default function PostsList() {
                               <ThumbDownIcon className="h-7 w-7 cursor-pointer text-gray-600" />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.disLikes?.length
-                                ? post?.disLikes?.length
+                              {post?.disLikes?.lenght
+                                ? post?.disLikes?.lenght
                                 : 0}
                             </div>
                           </div>
