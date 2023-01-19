@@ -5,6 +5,7 @@ import { baseUrl } from "../../../utils/baseURL";
 //create post action
             //actions to redirect after creating posts
 const resetPost = createAction("category/reset")
+const resetPostEdit = createAction("post/reset")
 
 export const createpostAction = createAsyncThunk(
   "post/created",
@@ -50,6 +51,8 @@ export const UpdatePostAction = createAsyncThunk(
         //http call
        
         const {data}= await axios.put(`${baseUrl}/api/posts/${post?.id}`,post,config)
+        //dispatch for redirect
+        dispatch(resetPostEdit()) 
         
         return data;
     } catch (error) {
@@ -175,17 +178,18 @@ const postSlice = createSlice({
         builder.addCase(UpdatePostAction.pending,(state,action)=>{
           state.loading = true;
       });
-                // //redirection
-                // builder.addCase(resetPost,(state,action)=>{
-                //     state.isCreated = true;
+                //redirection
+                builder.addCase(resetPostEdit,(state,action)=>{
+                    state.isUpdated = true;
 
-      // })
+      })
       builder.addCase(UpdatePostAction.fulfilled,(state,action)=>{
           state.postupdated = action?.payload;
           state.loading = false;
-         
+          
           state.appErr = undefined;
           state.serverErr = undefined
+          state.isUpdated = false;
       })
       builder.addCase(UpdatePostAction.rejected,(state,action)=>{
           state.loading = false;

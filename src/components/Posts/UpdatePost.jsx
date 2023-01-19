@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { Redirect, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import CategoriesOptions from "../Categories/CategoryDropDown"
@@ -14,18 +14,23 @@ const formSchema = Yup.object({
 });
 
 export default function UpdatePost() {
+const navigate = useNavigate()
 
   const {id} = useParams()
 //fetch post in the url
 const dispatch = useDispatch()
-//seelct post
-const postData = useSelector(state=>state.post)
-const{postDetails} = postData
-console.log(postDetails)
+
 
 useEffect(()=>{
   dispatch(fetchPostDetailAction(id))
 },[id,dispatch])
+//seelct post
+const postData = useSelector(state=>state.post)
+const{postDetails} = postData
+//select updated post from store
+const postUpdate = useSelector(state=>state.post)
+const {loading,appErr,serverErr,isUpdated} = postUpdate
+
 //formik
   const formik = useFormik({
     enableReinitialize:true,
@@ -44,14 +49,17 @@ useEffect(()=>{
     },
     validationSchema:formSchema,
   });
+  //redirect
+  if(isUpdated) return navigate("/posts")
   return (
     <>
       <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
-            Are you sure you want to edit{" "}
-            <span className="text-green-300">Title</span>
+            You sure wanna makes some edits in  {" "}
+            <span className="text-green-300">{postDetails?.title}</span>
           </h2>
+          {appErr || serverErr ? <h1 className="text-red-400 text-xl text-center">{serverErr} {appErr}</h1>:null}
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -110,12 +118,17 @@ useEffect(()=>{
               </div>
 
               <div>
-                <button
+                {loading?<button
+                  disabledtype="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600"
+                >
+                  please wait..its loading
+                </button>:<button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Update
-                </button>
+                </button>}
               </div>
             </form>
           </div>
