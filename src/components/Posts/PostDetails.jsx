@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostDetailAction } from "../../redux/slices/posts/postSlices";
+import { deletePostAction, fetchPostDetailAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
+
 
 const PostDetails = () => {
   const navigate = useNavigate()
@@ -62,7 +63,7 @@ const PostDetails = () => {
                   <Link to = {`/update-post/${postDetails?._id}`} className="p-3">
                     <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
                   </Link>
-                  <button className="ml-3">
+                  <button onClick={()=>dispatch(deletePostAction(postDetails._id))} className="ml-3">
                     <TrashIcon className="h-8 mt-3 text-red-600" />
                   </button>
                 </p>
