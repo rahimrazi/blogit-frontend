@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { Redirect } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import CategoriesOptions from "../Categories/CategoryDropDown"
+import { fetchPostDetailAction, UpdatePostAction } from "../../redux/slices/posts/postSlices";
+
 
 const formSchema = Yup.object({
   title: Yup.string().required("Title is required"),
@@ -10,8 +13,37 @@ const formSchema = Yup.object({
   category: Yup.object().required("Category is required"),
 });
 
-export default function UpdatePost(props) {
-  const formik = useFormik({});
+export default function UpdatePost() {
+
+  const {id} = useParams()
+//fetch post in the url
+const dispatch = useDispatch()
+//seelct post
+const postData = useSelector(state=>state.post)
+const{postDetails} = postData
+console.log(postDetails)
+
+useEffect(()=>{
+  dispatch(fetchPostDetailAction(id))
+},[id,dispatch])
+//formik
+  const formik = useFormik({
+    enableReinitialize:true,
+    initialValues:{
+      title:postDetails?.title,
+      description:postDetails.description,
+      category:''
+    },
+    onSubmit:values=>{
+      const data = {
+        title:values.title,
+        description:values.description,
+        id,
+      };
+      dispatch(UpdatePostAction(data))
+    },
+    validationSchema:formSchema,
+  });
   return (
     <>
       <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -24,7 +56,7 @@ export default function UpdatePost(props) {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6">
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
@@ -38,9 +70,9 @@ export default function UpdatePost(props) {
                     name="title"
                     type="title"
                     autoComplete="title"
-                    // onBlur={formik.handleBlur("title")}
-                    // value={formik.values.title}
-                    // onChange={formik.handleChange("title")}
+                    onBlur={formik.handleBlur("title")}
+                    value={formik.values.title}
+                    onChange={formik.handleChange("title")}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -49,13 +81,13 @@ export default function UpdatePost(props) {
                 </div>
               </div>
 
-              {/* <CategoriesOptions
+              <CategoriesOptions
                 value={formik.values.category?.categoryTitle}
                 onChange={formik.setFieldValue}
                 onBlur={formik.setFieldTouched}
                 error={formik.errors.category}
                 touched={formik.touched.category}
-              /> */}
+              />
               <div>
                 <label
                   htmlFor="password"
@@ -66,14 +98,14 @@ export default function UpdatePost(props) {
                 <textarea
                   rows="5"
                   cols="10"
-                  // onBlur={formik.handleBlur("description")}
-                  // value={formik.values.description}
-                  // onChange={formik.handleChange("description")}
+                  onBlur={formik.handleBlur("description")}
+                  value={formik.values.description}
+                  onChange={formik.handleChange("description")}
                   className="rounded-lg appearance-none block w-full py-3 px-3 text-base text-center leading-tight text-gray-600 bg-transparent focus:bg-transparent  border border-gray-200 focus:border-gray-500  focus:outline-none"
                   type="text"
                 ></textarea>
                 <div className="text-red-500">
-                  {/* {formik.touched.description && formik.errors.description} */}
+                  {formik.touched.description && formik.errors.description}
                 </div>
               </div>
 
