@@ -12,6 +12,8 @@ import AdminProtectedRoute from "./components/Navigation/ProtectedRoutes/AdminPr
 import CreatePost from "./components/Posts/CreatePost";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
 import PostsList from "./components/Posts/PostList";
+import PostDetails from "./components/Posts/PostDetails";
+
 
 
 
@@ -49,6 +51,14 @@ function App() {
             element={
               
                 <PostsList />
+              
+            }
+          />
+           <Route
+            path="/posts/:id"
+            element={
+              
+                <PostDetails />
               
             }
           />

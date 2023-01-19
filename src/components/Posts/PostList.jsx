@@ -85,9 +85,7 @@ export default function PostsList() {
               <div class="w-full lg:w-3/4 px-3">
                 {/* Post goes here */}
 
-                {loading ? (
-                  <LoadingComponent />
-                ) : appErr || serverErr ? (
+                {appErr || serverErr ? (
                   <h1>
                     {serverErr} {appErr}
                   </h1>
