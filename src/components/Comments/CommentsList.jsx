@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import Moment from "react-moment";
+import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function CommentsList({ comments }) {
+    //dispatch
+   const dispatch = useDispatch()
   console.log(comments);
   return (
     <div>
@@ -13,7 +18,7 @@ export default function CommentsList({ comments }) {
             <h1 className="text-yellow-400 text-lg text-center">No comments</h1>
           ) : (
             comments?.map(comment => (
-              <div key={comment.id}>
+              <div key={comment?._id}>
                 <li className="py-4  w-full">
                   <div className="flex space-x-3">
                     <img
@@ -45,7 +50,7 @@ export default function CommentsList({ comments }) {
                         <Link class="p-3">
                           <PencilAltIcon class="h-5 mt-3 text-yellow-300" />
                         </Link>
-                        <button class="ml-3">
+                        <button onClick={()=>dispatch(deleteCommentAction(comment?._id)) }class="ml-3">
                           <TrashIcon class="h-5 mt-3 text-red-600" />
                         </button>
                       </p>

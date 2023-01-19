@@ -7,6 +7,8 @@ import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComments";
 import CommentsList from "../Comments/CommentsList";
+import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
+
 
 
 
@@ -20,10 +22,10 @@ const PostDetails = () => {
   const { postDetails,loading,appErr,serverErr,isDeleted} = post
   //comment
   const comment = useSelector(state=> state.comment)
-  const { commentCreated} = comment
+  const { commentCreated,commentDeleted} = comment
   useEffect(()=>{
     dispatch(fetchPostDetailAction(id))
-  },[id,dispatch,commentCreated])
+  },[id,dispatch,commentCreated,commentDeleted])
 
   
 
