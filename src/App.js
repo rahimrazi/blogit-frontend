@@ -11,6 +11,8 @@ import UpdateCategory from "./components/Categories/UpdateCategory";
 import AdminProtectedRoute from "./components/Navigation/ProtectedRoutes/AdminProtectedRoute";
 import CreatePost from "./components/Posts/CreatePost";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
+import PostsList from "./components/Posts/PostList";
+
 
 
 function App() {
@@ -42,7 +44,14 @@ function App() {
               </UserProtectedRoute>
             }
           />
-          
+          <Route
+            path="/posts"
+            element={
+              
+                <PostsList />
+              
+            }
+          />
           
           
           
