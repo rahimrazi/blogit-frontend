@@ -34,13 +34,31 @@ export const createpostAction = createAsyncThunk(
     }
   }
 );
-
+//fetch all posts for listing
+export const fetchPostsAction = createAsyncThunk(
+  "post/list",
+  async (post, { rejectWithValue, getState, dispatch }) => {
+    
+    try {
+        //http call
+       
+        const {data}= await axios.get(`${baseUrl}/api/posts`)
+        //dispatch action
+        
+        return data;
+    } catch (error) {
+        if(!error?.response) throw error;
+        return rejectWithValue(error?.response?.data)
+    }
+  }
+);
 // slice
 
 const postSlice = createSlice({
     name:'post',
     initialState:{},
     extraReducers:(builder)=>{
+      //create post
         builder.addCase(createpostAction.pending,(state,action)=>{
             state.loading = true;
         });
@@ -61,6 +79,26 @@ const postSlice = createSlice({
             state.appErr = action?.payload?.message;
             state.serverErr = action?.payload?.message
         })
+        //fetch all posts
+        //create post
+        builder.addCase(fetchPostsAction.pending,(state,action)=>{
+          state.loading = true;
+      });
+     
+
+      
+      builder.addCase(fetchPostsAction.fulfilled,(state,action)=>{
+          state.postLists = action?.payload;
+          state.loading = false;
+          
+          state.appErr = undefined;
+          state.serverErr = undefined
+      })
+      builder.addCase(fetchPostsAction.rejected,(state,action)=>{
+          state.loading = false;
+          state.appErr = action?.payload?.message;
+          state.serverErr = action?.payload?.message
+      })
 
     }
 })
