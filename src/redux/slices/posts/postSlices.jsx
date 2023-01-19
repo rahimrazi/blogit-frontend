@@ -6,6 +6,7 @@ import { baseUrl } from "../../../utils/baseURL";
             //actions to redirect after creating posts
 const resetPost = createAction("category/reset")
 const resetPostEdit = createAction("post/reset")
+const resetPostDelete = createAction("post/delete")
 
 export const createpostAction = createAsyncThunk(
   "post/created",
@@ -79,7 +80,8 @@ export const deletePostAction = createAsyncThunk(
         //http call
        
         const {data}= await axios.delete(`${baseUrl}/api/posts/${postId}`,config)
-       
+       //dispatch
+       dispatch(resetPostDelete())
         
         return data;
     } catch (error) {
@@ -228,9 +230,13 @@ const postSlice = createSlice({
        builder.addCase(deletePostAction.pending,(state,action)=>{
         state.loading = true;
     });
+      builder.addCase(resetPostDelete,(state,action)=>{
+        state.isDeleted = true;
+      })
               
     builder.addCase(deletePostAction.fulfilled,(state,action)=>{
         state.postupdated = action?.payload;
+        state.isDeleted = false
         state.loading = false;
         
         state.appErr = undefined;

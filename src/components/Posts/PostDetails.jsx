@@ -16,8 +16,9 @@ const PostDetails = () => {
   },[id,dispatch])
 // select post detaills from store
   const post = useSelector(state=> state?.post)
-  const { postDetails,loading,appErr,serverErr} = post
-
+  const { postDetails,loading,appErr,serverErr,isDeleted} = post
+  //redirect
+if(isDeleted) navigate('/posts/')
   return (
     <>
     {loading? <div className = "h-screen "> <LoadingComponent/> </div>:appErr||serverErr?<h1 className="h-screen text-red-400 text-xl" >{appErr} {serverErr}</h1>: <section className="py-20 2xl:py-40 bg-gray-800 overflow-hidden">
