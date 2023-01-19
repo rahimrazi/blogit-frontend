@@ -1,8 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../../utils/baseURL";
 
 //create post action
+            //actions to redirect after creating posts
+const resetPost = createAction("category/reset")
 
 export const createpostAction = createAsyncThunk(
   "post/created",
@@ -23,6 +25,8 @@ export const createpostAction = createAsyncThunk(
         formData.append('category',post?.category?.label)
         formData.append('image',post?.image)
         const {data}= await axios.post(`${baseUrl}/api/posts`,formData,config)
+        //dispatch action
+        dispatch(resetPost())
         return data;
     } catch (error) {
         if(!error?.response) throw error;
@@ -40,9 +44,15 @@ const postSlice = createSlice({
         builder.addCase(createpostAction.pending,(state,action)=>{
             state.loading = true;
         });
+        //redirection
+        builder.addCase(resetPost,(state,action)=>{
+            state.isCreated = true;
+
+        })
         builder.addCase(createpostAction.fulfilled,(state,action)=>{
             state.postCreated = action?.payload;
             state.loading = false;
+            state.isCreated = false
             state.appErr = undefined;
             state.serverErr = undefined
         })

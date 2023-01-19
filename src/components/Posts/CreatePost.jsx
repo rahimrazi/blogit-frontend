@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
 import { createpostAction } from "../../redux/slices/posts/postSlices";
 import CategoryDropDown from "../Categories/CategoryDropDown";
@@ -33,6 +34,10 @@ border-color:'red'
 export default function CreatePost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // select store data
+  const post = useSelector(state=> state.post)
+  const {isCreated, loading,appErr,serverErr} = post
+  console.log(post)
   //formik
   const formik = useFormik({
     initialValues: {
@@ -55,6 +60,8 @@ export default function CreatePost() {
     },
     validationSchema: formSchema,
   });
+  //redirect
+  if(isCreated) return  navigate("/posts")
   return (
     <>
       <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -65,10 +72,18 @@ export default function CreatePost() {
 
           <p className="mt-2 text-center text-sm text-gray-600">
             <p className="font-medium text-green-600 hover:text-indigo-500">
-              Share your ideas to the word. Your post must be free from
+              Share your ideas to the world. Your post must be free from
               profanity
             </p>
           </p>
+            {appErr || serverErr? (<p className="mt-2 text-center text-lg text-red-600">
+            
+              {serverErr} {appErr}
+            
+          </p>):null}
+
+
+
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -97,6 +112,12 @@ export default function CreatePost() {
                 <div className="text-red-500">{formik?.touched?.title && formik?.errors?.title}</div>
               </div>
               {/* Category input goes here */}
+              <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Select Category
+                </label>
               <CategoryDropDown
                 value={formik.values.category.label}
                 onChange={formik.setFieldValue}
@@ -123,7 +144,13 @@ export default function CreatePost() {
                   type="text"
                 ></textarea>
                 {/* image component */}
-                <Container className="container bg-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium mt-3 mb-2 text-gray-700"
+                >
+                  Select image to upload
+                </label>
+                <Container className="container bg-gray-700 ">
                   <Dropzone
                     onBlur={formik.handleBlur("image")}
                     accept="image/jpeg, image/png"
@@ -155,12 +182,17 @@ export default function CreatePost() {
               </div>
               <div>
                 {/* Submit btn */}
-                <button
+                {loading? <button
+                  disabled
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Loading please wait
+                </button>:<button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Create
-                </button>
+                </button>}
               </div>
             </form>
           </div>
