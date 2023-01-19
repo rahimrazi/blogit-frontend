@@ -12,7 +12,7 @@ export default function PostsList() {
   const dispatch = useDispatch();
   //fetch post
   useEffect(() => {
-    dispatch(fetchPostsAction());
+    dispatch(fetchPostsAction(""));
   }, [dispatch]);
   //fetch categories
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function PostsList() {
               </div>
               <div class=" block text-right w-1/2">
                 {/* View All */}
-                <button class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
+                <button onClick ={()=>{dispatch(fetchPostsAction(""))}}class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
                   View All Posts
                 </button>
               </div>
@@ -66,12 +66,12 @@ export default function PostsList() {
                       <h1>
                         {catServerErr} {catAppErr}
                       </h1>
-                    ) : categoryList?.lenght <= 0 ? (
+                    ) : categoryList?.length <= 0 ? (
                       <h1>No Category Found</h1>
                     ) : (
                       categoryList?.map(category => (
                         <li>
-                          <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
+                          <p onClick={()=>dispatch(fetchPostsAction(category.title))} className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
                             {category?.title}
                           </p>
                         </li>
@@ -89,7 +89,7 @@ export default function PostsList() {
                   <h1>
                     {serverErr} {appErr}
                   </h1>
-                ) : postLists?.lenght <= 0 ? (
+                ) : postLists?.length <= 0 ? (
                   <h1>No Post Found</h1>
                 ) : (
                   postLists?.map(post => (
@@ -112,7 +112,7 @@ export default function PostsList() {
                               <ThumbUpIcon className="h-7 w-7 text-indigo-600 cursor-pointer" />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.likes?.lenght ? post?.likes?.lenght : 0}
+                              {post?.likes?.length ? post?.likes?.length : 0}
                             </div>
                           </div>
                           {/* Dislike */}
@@ -121,8 +121,8 @@ export default function PostsList() {
                               <ThumbDownIcon className="h-7 w-7 cursor-pointer text-gray-600" />
                             </div>
                             <div className="pl-2 text-gray-600">
-                              {post?.disLikes?.lenght
-                                ? post?.disLikes?.lenght
+                              {post?.disLikes?.length
+                                ? post?.disLikes?.length
                                 : 0}
                             </div>
                           </div>

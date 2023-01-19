@@ -22,7 +22,7 @@ export const createpostAction = createAsyncThunk(
         const formData = new FormData()
         formData.append('title',post?.title)
         formData.append('description',post?.description)
-        formData.append('category',post?.category?.label)
+        formData.append('category',post?.category)// formData.append('category',post?.category?.label)
         formData.append('image',post?.image)
         const {data}= await axios.post(`${baseUrl}/api/posts`,formData,config)
         //dispatch action
@@ -37,12 +37,12 @@ export const createpostAction = createAsyncThunk(
 //fetch all posts for listing
 export const fetchPostsAction = createAsyncThunk(
   "post/list",
-  async (post, { rejectWithValue, getState, dispatch }) => {
+  async (category, { rejectWithValue, getState, dispatch }) => {
     
     try {
         //http call
        
-        const {data}= await axios.get(`${baseUrl}/api/posts`)
+        const {data}= await axios.get(`${baseUrl}/api/posts?category=${category}`)
         //dispatch action
         
         return data;
