@@ -6,6 +6,7 @@ import { deletePostAction, fetchPostDetailAction } from "../../redux/slices/post
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComments";
+import CommentsList from "../Comments/CommentsList";
 
 
 
@@ -13,12 +14,18 @@ const PostDetails = () => {
   const navigate = useNavigate()
   const {id} = useParams()
   const dispatch = useDispatch()
-  useEffect(()=>{
-    dispatch(fetchPostDetailAction(id))
-  },[id,dispatch])
-// select post detaills from store
+
+  // select post detaills from store
   const post = useSelector(state=> state?.post)
   const { postDetails,loading,appErr,serverErr,isDeleted} = post
+  //comment
+  const comment = useSelector(state=> state.comment)
+  const { commentCreated} = comment
+  useEffect(()=>{
+    dispatch(fetchPostDetailAction(id))
+  },[id,dispatch,commentCreated])
+
+  
 
 
   //get logged in user
@@ -89,7 +96,7 @@ if(isDeleted) navigate('/posts/')
       <AddComment postId = {id}/>
         <div className="flex justify-center  items-center">
           {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
-          CommentsList
+          <CommentsList comments = {postDetails?.comments}/>
         </div>
       </section>}
       
