@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchPostsAction, toggleAddLikesToPost } from "../../redux/slices/posts/postSlices";
+import { fetchPostsAction, toggleAddDisLikesToPost, toggleAddLikesToPost } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -120,7 +120,7 @@ export default function PostsList() {
                           {/* Dislike */}
                           <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1">
                             <div>
-                              <ThumbDownIcon className="h-7 w-7 cursor-pointer text-gray-600" />
+                              <ThumbDownIcon onClick={()=>dispatch(toggleAddDisLikesToPost(post?._id))} className="h-7 w-7 cursor-pointer text-gray-600" />
                             </div>
                             <div className="pl-2 text-gray-600">
                               {post?.disLikes?.length}
