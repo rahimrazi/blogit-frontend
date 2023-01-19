@@ -96,6 +96,25 @@ export const toggleAddDisLikesToPost = createAsyncThunk('post/dislike',async(pos
 
 
 })
+
+//fetch post details
+export const fetchPostDetailAction = createAsyncThunk(
+  "post/details",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    
+    try {
+        //http call
+       
+        const {data}= await axios.get(`${baseUrl}/api/posts/${id}`)
+        
+        
+        return data;
+    } catch (error) {
+        if(!error?.response) throw error;
+        return rejectWithValue(error?.response?.data)
+    }
+  }
+);
 // slice
 
 const postSlice = createSlice({
@@ -185,7 +204,30 @@ const postSlice = createSlice({
       state.serverErr = action?.payload?.message
   })
 
-    }
+
+//fetch single post details
+       
+builder.addCase(fetchPostDetailAction.pending,(state,action)=>{
+  state.loading = true;
+});
+
+
+
+builder.addCase(fetchPostDetailAction.fulfilled,(state,action)=>{
+  state.postDetails = action?.payload;
+  state.loading = false;
+  
+  state.appErr = undefined;
+  state.serverErr = undefined
 })
+builder.addCase(fetchPostDetailAction.rejected,(state,action)=>{
+  state.loading = false;
+  state.appErr = action?.payload?.message;
+  state.serverErr = action?.payload?.message
+})
+
+}
+})
+
 
 export default postSlice.reducer
