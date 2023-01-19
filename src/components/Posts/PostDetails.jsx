@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePostAction, fetchPostDetailAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
+import AddComment from "../Comments/AddComments";
+
 
 
 const PostDetails = () => {
@@ -17,6 +19,17 @@ const PostDetails = () => {
 // select post detaills from store
   const post = useSelector(state=> state?.post)
   const { postDetails,loading,appErr,serverErr,isDeleted} = post
+
+
+  //get logged in user
+
+  const user = useSelector(state=> state?.users)
+  const {
+    userAuth :{ _id },
+  } = user
+//compare both logged in user and the post created user
+  const isCreatedBy = postDetails?.user?._id ===_id
+  console.log(isCreatedBy)
   //redirect
 if(isDeleted) navigate('/posts/')
   return (
@@ -59,21 +72,21 @@ if(isDeleted) navigate('/posts/')
               <p className="mb-6 text-left  text-xl text-gray-200">
                 {postDetails?.description}
                 
-                {/* Show delete and update btn if created user */}
-                <p className="flex">
+                {/* Show delete and update btn if its created by logged in user */}
+                {isCreatedBy?<p className="flex">
                   <Link to = {`/update-post/${postDetails?._id}`} className="p-3">
                     <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
                   </Link>
                   <button onClick={()=>dispatch(deletePostAction(postDetails._id))} className="ml-3">
                     <TrashIcon className="h-8 mt-3 text-red-600" />
                   </button>
-                </p>
+                </p>:null}
               </p>
             </div>
           </div>
         </div>
         {/* Add comment Form component here */}
-
+      <AddComment postId = {id}/>
         <div className="flex justify-center  items-center">
           {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
           CommentsList
