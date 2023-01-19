@@ -13,6 +13,8 @@ import CreatePost from "./components/Posts/CreatePost";
 import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProtectedRoute";
 import PostsList from "./components/Posts/PostList";
 import PostDetails from "./components/Posts/PostDetails";
+import UpdatePost from "./components/Posts/UpdatePost";
+
 
 
 
@@ -59,6 +61,15 @@ function App() {
             element={
               
                 <PostDetails />
+              
+            }
+          />
+          <Route
+            path="/update-post/:id"
+            element={
+              <UserProtectedRoute>
+                <UpdatePost/>
+                </UserProtectedRoute>
               
             }
           />
