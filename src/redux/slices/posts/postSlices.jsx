@@ -64,7 +64,7 @@ export const toggleAddLikesToPost = createAsyncThunk('post/like',async(postId,{r
     },
   };
   try {
-    const{data}=await axios.put(`${baseUrl}/api/posts/likes`,postId,config)
+    const{data}=await axios.put(`${baseUrl}/api/posts/likes`,{postId},config)
     return data
     
   } catch (error) {
