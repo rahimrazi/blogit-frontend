@@ -14,6 +14,7 @@ import UserProtectedRoute from "./components/Navigation/ProtectedRoutes/UserProt
 import PostsList from "./components/Posts/PostList";
 import PostDetails from "./components/Posts/PostDetails";
 import UpdatePost from "./components/Posts/UpdatePost";
+import UpdateComment from "./components/Comments/UpdateComment";
 
 
 
@@ -71,6 +72,14 @@ function App() {
                 <UpdatePost/>
                 </UserProtectedRoute>
               
+            }
+          />
+          <Route
+            path="/update-comment/:id"
+            element={
+              <UserProtectedRoute>
+                <UpdateComment />
+              </UserProtectedRoute>
             }
           />
           

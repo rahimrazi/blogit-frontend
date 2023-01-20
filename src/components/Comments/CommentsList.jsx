@@ -47,7 +47,7 @@ export default function CommentsList({ comments }) {
                       {/* Check if is the same user created this comment */}
 
                       <p class="flex">
-                        <Link class="p-3">
+                        <Link to= {`/update-comment/${comment?._id}`} class="p-3">
                           <PencilAltIcon class="h-5 mt-3 text-yellow-300" />
                         </Link>
                         <button onClick={()=>dispatch(deleteCommentAction(comment?._id)) }class="ml-3">
