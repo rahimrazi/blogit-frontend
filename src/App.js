@@ -15,6 +15,7 @@ import PostsList from "./components/Posts/PostList";
 import PostDetails from "./components/Posts/PostDetails";
 import UpdatePost from "./components/Posts/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
+import Profile from "./components/Users/Profile/Profile";
 
 
 
@@ -80,6 +81,15 @@ function App() {
               <UserProtectedRoute>
                 <UpdateComment />
               </UserProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/:id"
+            element={
+              <UserProtectedRoute>
+                <Profile />
+                </UserProtectedRoute>
+              
             }
           />
           
