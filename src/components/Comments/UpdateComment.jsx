@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { fetchCommentAction, updateCommentAction } from "../../redux/slices/comments/commentSlices";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 
 
@@ -14,20 +14,25 @@ const formSchema = Yup.object({
 
 const UpdateComment = () => {
   const {id} = useParams()
-  //select comment from store
-  const comment= useSelector(state=>state?.comment)
-  const{commentDetails,isUpdate}=comment;
   //dispatch
   const dispatch = useDispatch()
+  
   //fetch comment
   useEffect(()=>{
-     dispatch(updateCommentAction(id))
+     dispatch(fetchCommentAction(id))
   },[dispatch,id])
+  //select comment from store
+  const comment= useSelector(state=>state?.comment)
+  
+  const{commentDetails,isUpdate}=comment;
+  // const post = useSelector(state=>state?.post)
+  // console.log(post);
 
   
   const formik = useFormik({
+    eneableReinitialize:true,
     initialValues: {
-      description: "",
+      description: commentDetails?.description,
     },
     onSubmit: values => {
       const data = {
@@ -40,6 +45,8 @@ const UpdateComment = () => {
     },
     validationSchema: formSchema,
   });
+  //redirect
+  if(isUpdate) return <Navigate to={`/posts/${commentDetails.post}`} />
   return (
     <div className="h-96 flex justify-center items-center">
     <div className="flex flex-col justify-center items-center">
@@ -47,14 +54,14 @@ const UpdateComment = () => {
         onSubmit={formik.handleSubmit}
         className="mt-1 flex max-w-sm m-auto"
       >
-        <input
+        <textarea
           onBlur={formik.handleBlur("description")}
           value={formik.values.description}
           onChange={formik.handleChange("description")}
           type="text"
           name="text"
           id="text"
-          className="shadow-sm focus:ring-indigo-500  mr-2 focus:border-indigo-500 block w-full p-2 border-1 sm:text-sm border-gray-300 rounded-md"
+          className="shadow-sm focus:ring-indigo-500  mr-2 focus:border-indigo-500 block w-full p-2 border-2 sm:text-sm border-gray-300 rounded-md"
           placeholder="Add New comment"
         />
 
