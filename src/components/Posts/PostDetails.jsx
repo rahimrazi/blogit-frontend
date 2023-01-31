@@ -95,7 +95,7 @@ if(isDeleted) navigate('/posts/')
           </div>
         </div>
         {/* Add comment Form component here */}
-      <AddComment postId = {id}/>
+      {userAuth?<AddComment postId = {id}/>:null}
         <div className="flex justify-center  items-center">
           {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
           <CommentsList comments = {postDetails?.comments}/>
