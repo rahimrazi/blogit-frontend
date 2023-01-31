@@ -34,10 +34,10 @@ const PostDetails = () => {
 
   const user = useSelector(state=> state?.users)
   const {
-    userAuth :{ _id },
+    userAuth 
   } = user
 //compare both logged in user and the post created user
-  const isCreatedBy = postDetails?.user?._id ===_id
+  const isCreatedBy = postDetails?.user?._id ===userAuth?._id
   console.log(isCreatedBy)
   //redirect
 if(isDeleted) navigate('/posts/')
