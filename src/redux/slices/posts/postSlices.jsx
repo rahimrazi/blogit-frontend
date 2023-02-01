@@ -7,7 +7,7 @@ import { baseUrl } from "../../../utils/baseURL";
 const resetPost = createAction("category/reset")
 const resetPostEdit = createAction("post/reset")
 const resetPostDelete = createAction("post/delete")
-
+//create post
 export const createpostAction = createAsyncThunk(
   "post/created",
   async (post, { rejectWithValue, getState, dispatch }) => {
@@ -175,6 +175,8 @@ export const fetchPostDetailAction = createAsyncThunk(
     }
   }
 );
+
+
 // slice
 
 const postSlice = createSlice({

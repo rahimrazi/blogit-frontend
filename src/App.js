@@ -79,7 +79,7 @@ function App() {
           />
           
           <Route
-            path="/upload-photo/:id"
+            path="/upload-profile-photo"
             element={
               <UserProtectedRoute>
                 <UploadProfilePhoto/>

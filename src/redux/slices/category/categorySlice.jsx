@@ -40,6 +40,7 @@ export const createCategoryAction = createAsyncThunk(
   }
 );
 
+
 //action for fetching all categories
 export const fetchCategoriesAction = createAsyncThunk(
   "category/fetch",
