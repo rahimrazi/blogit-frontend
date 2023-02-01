@@ -17,6 +17,7 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
+import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 
 
 
@@ -83,6 +84,15 @@ function App() {
             element={
               <UserProtectedRoute>
                 <UploadProfilePhoto/>
+                </UserProtectedRoute>
+              
+            }
+          />
+          <Route
+            path="/update-profile"
+            element={
+              <UserProtectedRoute>
+                <UpdateProfileForm/>
                 </UserProtectedRoute>
               
             }

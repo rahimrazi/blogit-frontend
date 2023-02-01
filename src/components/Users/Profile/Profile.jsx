@@ -9,10 +9,12 @@ import {
 
 
 
+
 import { MailIcon, EyeIcon } from "@heroicons/react/solid";
 import { userProfileAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../../utils/DateFormatter";
+import LoadingComponent from "../../../utils/LoadingComponent";
 
 
 export default function Profile() {
@@ -25,10 +27,11 @@ export default function Profile() {
   //User data from strore
   const users = useSelector(state=>state.users)
   const {profile,loading,appErr,serverErr}= users
-  console.log(profile)
+  
   return (
     <>
-      <div className="h-screen flex overflow-hidden bg-white">
+    <div className = "min-h-screen bg-green-500 flex justify-center item-center">
+      {loading?<LoadingComponent/>: appErr || serverErr? <h2>{serverErr} {appErr}</h2>:<div className="h-screen flex overflow-hidden bg-white">
         {/* Static sidebar for desktop */}
 
         <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
@@ -249,6 +252,8 @@ export default function Profile() {
           </div>
         </div>
       </div>
-    </>
+}
+    </div>
+          </>
   );
 }
