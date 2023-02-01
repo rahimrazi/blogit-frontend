@@ -1,7 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../../utils/baseURL";
 
+//redirect action
+const resetUserAction = createAction('user/profile/reset')
 
 //register action
 
@@ -120,6 +122,9 @@ export const updateUserAction = createAsyncThunk(
         },
         config
       );
+
+      //dispactch for redirection
+      dispatch(resetUserAction())
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -312,9 +317,13 @@ state.serverErr= action?.error?.message
     state.serverErr= undefined
 
 });
+builder.addCase(resetUserAction,(state,action)=>{
+  state.isUpdated = true
+})
 builder.addCase(updateUserAction.fulfilled, (state,action)=> {
 state.loading = false;
 state.userUpdated = action?.payload
+state.isUpdated = false
 state.appErr = undefined
 state.serverErr= undefined
 });

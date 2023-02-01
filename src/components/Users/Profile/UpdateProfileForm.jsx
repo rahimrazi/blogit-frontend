@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import {  useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { fetchUserDetailAction, updateUserAction } from "../../../redux/slices/users/usersSlices";
@@ -15,6 +15,7 @@ const formSchema = Yup.object({
 });
 
 const UpdateProfileForm = () => {
+    const navigate = useNavigate()
      const {id} = useParams();
     const dispatch = useDispatch();
     //fetch user details
@@ -24,7 +25,7 @@ const UpdateProfileForm = () => {
 
     //get data of user from store
     const users = useSelector(state=>state?.users)
-    const {userDetails} = users
+    const {userDetails,isUpdated,loading,appErr,serverErr} = users
   //formik
   const formik = useFormik({
     enableReinitialize:true,
@@ -41,12 +42,17 @@ const UpdateProfileForm = () => {
     },
     validationSchema: formSchema,
   });
+  //redirect
+  if(isUpdated) return navigate(`/profile/${id}`)
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h3 className="mt-6 text-center text-3xl font-extrabold text-gray-300">
-          you want to update your profile?
+        you want to update your profile?
         </h3>
+        {/* error */}
+        {serverErr || appErr?
+        <h2 className="text-red-300 text-center">{serverErr} {appErr}</h2>:null}
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -149,12 +155,17 @@ const UpdateProfileForm = () => {
             </div>
             <div>
               {/* submit btn */}
-              <button
+             {loading?  <button
+                disabled
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 "
+              >
+                Loading. Please wait...
+              </button>: <button
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Update
-              </button>
+              </button>}
             </div>
           </form>
 
