@@ -1,8 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
-import { Redirect } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { fetchUserDetailAction, updateUserAction } from "../../../redux/slices/users/usersSlices";
+import { useEffect } from "react";
 
 //Form schema
 const formSchema = Yup.object({
@@ -13,18 +15,29 @@ const formSchema = Yup.object({
 });
 
 const UpdateProfileForm = () => {
+     const {id} = useParams();
+    const dispatch = useDispatch();
+    //fetch user details
+    useEffect(()=>{
+        dispatch(fetchUserDetailAction(id))
+    },[dispatch,id])
+
+    //get data of user from store
+    const users = useSelector(state=>state?.users)
+    const {userDetails} = users
   //formik
   const formik = useFormik({
+    enableReinitialize:true,
     initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      bio: "",
+      firstName: userDetails?.firstName,
+      lastName: userDetails?.lastName,
+      email: userDetails?.email,
+      bio: userDetails?.bio
     },
     onSubmit: values => {
-      //dispath the action
-      // dispatch(registerUserAction(values));
-      console.log(values);
+    //   dispath the action
+      dispatch(updateUserAction(values));
+     
     },
     validationSchema: formSchema,
   });
