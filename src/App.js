@@ -18,6 +18,7 @@ import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
+import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 
 
 
@@ -78,7 +79,15 @@ function App() {
               
             }
           />
-          
+          <Route
+            path="/verify-account/:token"
+            element={
+              <UserProtectedRoute>
+                <AccountVerified/>
+                </UserProtectedRoute>
+              
+            }
+          />
           <Route
             path="/upload-profile-photo"
             element={

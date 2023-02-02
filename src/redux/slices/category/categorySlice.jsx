@@ -45,20 +45,20 @@ export const createCategoryAction = createAsyncThunk(
 export const fetchCategoriesAction = createAsyncThunk(
   "category/fetch",
   async (category, { rejectWithValue, getState, dispatch }) => {
-    //get the user token
-    const user = getState()?.users;
-    const { userAuth } = user;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userAuth?.token}`,
-      },
-    };
+    // //get the user token
+    // const user = getState()?.users;
+    // const { userAuth } = user;
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userAuth?.token}`,
+    //   },
+    // };
     //http call
     try {
       const { data } = await axios.get(
         `${baseUrl}/api/category`,
         
-        config
+        // config
       );
       return data;
     } catch (error) {
@@ -141,20 +141,20 @@ export const fetchCategoryAction = createAsyncThunk(
   "category/details",
   async (id, { rejectWithValue, getState, dispatch }) => {
     //get the user token
-    const user = getState()?.users;
-    const { userAuth } = user;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userAuth?.token}`,
-      },
-    };
+    // const user = getState()?.users;
+    // const { userAuth } = user;
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userAuth?.token}`,
+    //   },
+    // };
     //http call
     try {
       const { data } = await axios.get(
         `${baseUrl}/api/category/${id}`,
         
         
-        config
+        //config
       );
       return data;
     } catch (error) {
