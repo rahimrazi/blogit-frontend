@@ -19,6 +19,7 @@ import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
+import UsersList from "./components/Users/UsersList/UsersList";
 
 
 
@@ -43,6 +44,8 @@ function App() {
             <Route path="/add-category" element={<AddNewCategory />} />
 
             <Route path="/update-category/:id" element={<UpdateCategory />} />
+            <Route path="/users" element={<UsersList />} />
+
           </Route>
           {/* <Route exact path="/add-category" element={<AddNewCategory />} /> */}
 

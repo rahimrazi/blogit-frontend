@@ -144,6 +144,57 @@ export const fetchUserDetailAction = createAsyncThunk(
     }
   }
 );
+//Block User
+export const blockUserAction = createAsyncThunk(
+  "user/block",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.put(
+        `${baseUrl}/api/users/block-user/${id}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//unBlock User
+export const unBlockUserAction = createAsyncThunk(
+  "user/unblock",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.put(
+        `${baseUrl}/api/users/unblock-user/${id}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 // Logout action
 
 export const logoutAction = createAsyncThunk(
@@ -251,6 +302,33 @@ export const unfollowUserAction = createAsyncThunk(
   }
 );
 
+//fetch all users for listing
+export const fetchUsersAction = createAsyncThunk(
+  "user/list",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    //http call
+     //get user token
+     const user = getState()?.users;
+     const { userAuth } = user;
+     const config = {
+       headers: {
+         Authorization: `Bearer ${userAuth?.token}`,
+         
+       },
+     };
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/users/`,config);
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+
 //get user from local storage and place it into store
 const userLoginFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -335,6 +413,42 @@ const usersSlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
     });
+    //Block user
+    builder.addCase(blockUserAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(blockUserAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.block = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(blockUserAction.rejected, (state, action) => {
+      console.log(action.payload);
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //unBlock user
+    builder.addCase(unBlockUserAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(unBlockUserAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.unblock = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(unBlockUserAction.rejected, (state, action) => {
+      console.log(action.payload);
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
 
     //logout
     builder.addCase(logoutAction.pending, (state, action) => {
@@ -350,6 +464,24 @@ const usersSlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
       state.loading = false;
+    });
+
+     //fetching all  user details action  
+     builder.addCase(fetchUsersAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(fetchUsersAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.usersList = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(fetchUsersAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
     });
 
     //update profile
