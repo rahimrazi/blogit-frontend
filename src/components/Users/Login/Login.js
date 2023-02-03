@@ -33,9 +33,9 @@ const Login = () => {
 
   //redirect after successful login
   const store = useSelector((state)=>state?.users)
-  console.log(store);
+  
   const {userAuth,loading,serverErr,appErr}=store
-  if(userAuth) return <Navigate to ="/posts"/>
+  if(userAuth) return <Navigate to ={`/profile/${userAuth?._id}`}/>
 
   return (
     <>

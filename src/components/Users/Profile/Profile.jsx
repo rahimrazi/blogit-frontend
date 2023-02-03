@@ -28,7 +28,7 @@ export default function Profile() {
     profileAppErr,
     profileServerErr,
     followed,
-    unFollowed,
+    unFollowed,userAuth
   } = users;
   //fetch user profle
   
@@ -37,11 +37,13 @@ export default function Profile() {
   }, [id, dispatch, followed, unFollowed]);
 
   
-  
+  //isLogin
+
+  const isLoginUser = userAuth?._id === profile?._id;
   
   return (
     <>
-      <div className="min-h-screen bg-green-600 flex justify-center items-center">
+      <div className="min-h-screen bg-green-600 items-center">
         {profileLoading ? (
           <LoadingComponent />
         ) : profileAppErr || profileServerErr ? (
@@ -128,7 +130,7 @@ export default function Profile() {
 
                             <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                               {/* // Hide follow button from the same */}
-                              <div>
+                              {!isLoginUser && <div>
                                 {profile?.isFollowing ? (
                                   <button
                                     onClick={() =>
@@ -162,7 +164,7 @@ export default function Profile() {
                                 )}
 
                                 <></>
-                              </div>
+                              </div>}
 
                               {/* Update Profile */}
 
