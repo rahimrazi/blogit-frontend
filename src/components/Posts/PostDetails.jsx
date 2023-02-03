@@ -64,7 +64,7 @@ if(isDeleted) navigate('/posts/')
                 alt=""
               />
               <div className="text-left">
-                <Link to={`/profile/${postDetails.user?._id}`}>
+                <Link to={`/profile/${postDetails?.user?._id}`}>
                 <h4 className="mb-1 text-2xl font-bold text-gray-50">
                   <span className="text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-yellow-200 to-orange-600">
                     {postDetails?.user?.firstName} &nbsp;
@@ -88,7 +88,7 @@ if(isDeleted) navigate('/posts/')
                   <Link to = {`/update-post/${postDetails?._id}`} className="p-3">
                     <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
                   </Link>
-                  <button onClick={()=>dispatch(deletePostAction(postDetails._id))} className="ml-3">
+                  <button onClick={()=>dispatch(deletePostAction(postDetails?._id))} className="ml-3">
                     <TrashIcon className="h-8 mt-3 text-red-600" />
                   </button>
                 </p>:null}
