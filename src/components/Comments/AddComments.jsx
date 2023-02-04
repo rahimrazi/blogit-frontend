@@ -13,6 +13,10 @@ const formSchema = Yup.object({
 const AddComment = ({ postId }) => {
   //dispatch
     const dispatch = useDispatch()
+
+  //select data from store
+  const comment = useSelector(state=>state?.comment)
+  const {loading,appErr,serverErr} = comment
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -30,6 +34,8 @@ const AddComment = ({ postId }) => {
   });
   return (
     <div className="flex flex-col justify-center items-center">
+      {/* error */}
+      {serverErr || appErr  ? <h2 className="text-red-400 pb-2">{serverErr} {appErr}</h2> :null}
       <form
         onSubmit={formik.handleSubmit}
         className="mt-1 flex max-w-sm m-auto"

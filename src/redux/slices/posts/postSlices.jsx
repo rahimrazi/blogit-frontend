@@ -182,7 +182,7 @@ export const fetchPostDetailAction = createAsyncThunk(
 const postSlice = createSlice({
     name:'post',
     initialState:{},
-    extraReducers:(builder)=>{
+    extraReducers:builder=>{
       //create post
         builder.addCase(createpostAction.pending,(state,action)=>{
             state.loading = true;
