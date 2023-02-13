@@ -20,6 +20,8 @@ import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import AccountVerified from "./components/Users/AccountVerification/AccountVerified";
 import UsersList from "./components/Users/UsersList/UsersList";
+import { Button, ButtonGroup } from "@chakra-ui/react";
+import ChatPage from "./components/Chat/ChatPage";
 
 
 
@@ -30,6 +32,7 @@ function App() {
   return (
     <div>
       <Router>
+      
         <Navbar />
 
         <Routes>
@@ -133,7 +136,18 @@ function App() {
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
+
+          <Route
+            path="/chats"
+            element={
+              
+                <ChatPage />
+              
+            }
+          />
         </Routes>
+
       </Router>
     </div>
   );
