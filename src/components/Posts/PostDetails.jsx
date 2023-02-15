@@ -43,16 +43,16 @@ const PostDetails = () => {
 if(isDeleted) navigate('/posts/')
   return (
     <>
-    {loading? <div className = "h-screen "> <LoadingComponent/> </div>:appErr||serverErr?<h1 className="h-screen text-red-400 text-xl" >{appErr} {serverErr}</h1>: <section className="py-20 2xl:py-40 bg-gray-800 overflow-hidden">
+    {loading? <div className = "h-screen "> <LoadingComponent/> </div>:appErr||serverErr?<h1 className="h-screen text-red-400 text-xl" >{appErr} {serverErr}</h1>: <section className="py-20 2xl:py-40 bg-gray-200 overflow-hidden">
         <div className="container px-4 mx-auto">
           {/* Post Image */}
           <img
-            className="mb-24 w-full h-96 object-cover"
+            className="mx-auto w-100 h-96"
             src={postDetails?.image}
             alt=""
           />
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="mt-7 mb-14 text-6xl 2xl:text-7xl text-white font-bold font-heading">
+            <h2 className="mt-7 mb-5 text-4xl 2xl:text-4xl text-black font-bold font-heading font-serif">
               {postDetails?.title}
             </h2>
 
@@ -66,13 +66,13 @@ if(isDeleted) navigate('/posts/')
               <div className="text-left">
                 <Link to={`/profile/${postDetails?.user?._id}`}>
                 <h4 className="mb-1 text-2xl font-bold text-gray-50">
-                  <span className="text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-yellow-200 to-orange-600">
+                  <span className="text-xl lg:text-2xl font-bold text-black font-serif">
                     {postDetails?.user?.firstName} &nbsp;
                     {postDetails?.user?.lastName}
                   </span>
                 </h4>
                 </Link>
-                <p className="text-gray-500">
+                <p className="text-gray-600 font-bold">
                   <DateFormatter date={post?.createdAt} />
                   
                 </p>
@@ -80,13 +80,13 @@ if(isDeleted) navigate('/posts/')
             </div>
             {/* Post description */}
             <div className="max-w-xl mx-auto">
-              <p className="mb-6 text-left  text-xl text-gray-200">
+              <p className="mb-6 text-xl text-black-200 text-center">
                 {postDetails?.description}
                 
                 {/* Show delete and update btn if its created by logged in user */}
                 {isCreatedBy?<p className="flex">
                   <Link to = {`/update-post/${postDetails?._id}`} className="p-3">
-                    <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
+                    <PencilAltIcon className="h-8 mt-3 text-green-800" />
                   </Link>
                   <button onClick={()=>dispatch(deletePostAction(postDetails?._id))} className="ml-3">
                     <TrashIcon className="h-8 mt-3 text-red-600" />
