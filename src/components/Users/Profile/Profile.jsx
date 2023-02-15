@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   HeartIcon,
   EmojiSadIcon,
@@ -9,17 +9,23 @@ import {
 
 
 
-
 import { MailIcon, EyeIcon } from "@heroicons/react/solid";
 import { followUserAction, unfollowUserAction, userProfileAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
+import { ChatState } from "../../../Context/ChatProvider";
+import axios from "axios";
+import { baseUrl } from "../../../utils/baseURL";
+import { useToast } from "@chakra-ui/react";
 
 
 export default function Profile() {
   const {id} = useParams()
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { user,selectedChat,setSelectedChat,chats, setChats,notification,setNotification } = ChatState();
   //User data from strore
   const users = useSelector(state=>state.users)
   const {
@@ -40,7 +46,39 @@ export default function Profile() {
   //isLogin
 
   const isLoginUser = userAuth?._id === profile?._id;
-  
+
+    // ${profile?._id} to got user chat
+ 
+
+  async function handleMessage(){
+    
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
+      };
+      const userId = profile?._id
+      console.log(userId)
+      const { data } = await axios.post(`${baseUrl}/api/chat`, { userId }, config);
+      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      setSelectedChat(data);
+      navigate('/chats')
+      console.log(data,1231231)
+    } catch (error) {
+      toast({
+        title: "Error fetching the chat",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  }
+    
+    console.log(profile,123)
   return (
     <>
       <div className="min-h-screen bg-green-600 items-center">
@@ -182,9 +220,9 @@ export default function Profile() {
                                 </Link>}
                               </>
                               {/* Send Mail */}
-                              <Link
-                                to={`/chats`}
-                                className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                              <div
+                                onClick={handleMessage}
+                                className="cursor-pointer inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                               >
                                 <MailIcon
                                   className="-ml-1 mr-2 h-5 w-5 text-gray-200"
@@ -193,7 +231,7 @@ export default function Profile() {
                                 <span className="text-base mr-2  text-bold text-yellow-500">
                                   Send Message
                                 </span>
-                              </Link>
+                              </div>
                             </div>
                           </div>
                         </div>

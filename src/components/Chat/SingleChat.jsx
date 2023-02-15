@@ -52,7 +52,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
         },
       };
 
@@ -66,7 +66,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages(data);
       setLoading(false);
 
-      socket.emit("join chat", selectedChat._id);
+      socket.emit("join chat", selectedChat?._id);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -81,12 +81,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
-      socket.emit('stop typing',selectedChat._id)
+      socket.emit('stop typing',selectedChat?._id)
       try {
         const config = {
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
         };
         setNewMessage("");
@@ -94,7 +94,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           `${baseUrl}/api/message`,
           {
             content: newMessage,
-            chatId: selectedChat._id,
+            chatId: selectedChat?._id,
           },
           config
         );
@@ -155,7 +155,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     if (!typing) {
       setTyping(true);
-      socket.emit("typing", selectedChat._id);
+      socket.emit("typing", selectedChat?._id);
     }
     let lastTypingTime = new Date().getTime();
     var timerLength = 3000;
@@ -163,7 +163,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", selectedChat._id);
+        socket.emit("stop typing", selectedChat?._id);
         setTyping(false);
       }
     }, timerLength);
@@ -188,14 +188,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat("")}
             />
-            {!selectedChat.isGroupChat ? (
+            {!selectedChat?.isGroupChat ? (
               <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+                {getSender(user, selectedChat?.users)}
+                <ProfileModal user={getSenderFull(user, selectedChat?.users)} />
               </>
             ) : (
               <>
-                {selectedChat.chatName.toUpperCase()}
+                {selectedChat?.chatName.toUpperCase()}
                 <UpdateGroupChatModal
                   fetchMessages={fetchMessages}
                   fetchAgain={fetchAgain}

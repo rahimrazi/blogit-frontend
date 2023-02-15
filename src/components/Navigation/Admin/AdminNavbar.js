@@ -22,6 +22,7 @@ const navigation = [
   { name: "Authors", href: "/users", current: false },
   { name: "Add Category", href: "/add-category", current: false },
   { name: "Category List", href: "/category-list", current: false },
+  { name: "Chats", href: "/chats", current: false }
 ];
 
 function classNames(...classes) {

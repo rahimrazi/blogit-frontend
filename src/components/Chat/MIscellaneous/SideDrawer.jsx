@@ -93,6 +93,7 @@ const SideDrawer = () => {
   
         if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
         setSelectedChat(data);
+        console.log(data,1231231)
         setLoadingChat(false);
         onClose();
       } catch (error) {
@@ -136,10 +137,12 @@ const SideDrawer = () => {
             </MenuButton>
             <MenuList pl={2}>
               {!notification.length && "No New Messages"}
+
               {notification.map((notif) => (
                 <MenuItem
                   key={notif._id}
                   onClick={() => {
+                    {console.log(notif.chat,11111111111)}
                     setSelectedChat(notif.chat);
                     setNotification(notification.filter((n) => n !== notif));
                   }}

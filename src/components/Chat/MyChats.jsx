@@ -102,7 +102,10 @@ const MyChats = ({fetchAgain}) => {
           <Stack overflowY="scroll">
             {chats?.map((chat) => (
               <Box
-                onClick={() => setSelectedChat(chat)}
+                onClick={() =>{
+                  setSelectedChat(chat)
+                  console.log(chat,"helo")
+                } }
                 cursor="pointer"
                 bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
                 color={selectedChat === chat ? "white" : "black"}
@@ -113,7 +116,7 @@ const MyChats = ({fetchAgain}) => {
               >
                 
                   {!chat?.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                    ? getSender(loggedUser, chat?.users)
                     : chat?.chatName}
                 
                 {/* {chat?.latestMessage && (
