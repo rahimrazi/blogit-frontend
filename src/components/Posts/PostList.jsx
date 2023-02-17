@@ -57,12 +57,12 @@ export default function PostsList() {
             </div>
             <div class="flex flex-wrap -mx-3">
               <div class="mb-8 lg:mb-0 w-full lg:w-1/4 px-3">
-                <div class="py-4 px-6 bg-gray-300  shadow-md shadow-gray-500 rounded">
+                <div class="py-4 px-6 bg-gray-300  shadow-inner shadow-gray-500 rounded">
                   <h4 class="mb-4 text-black-500 font-bold font-serif uppercase">
                     Categories
                   </h4>
                   <ul>
-                  <li onClick ={()=>{dispatch(fetchPostsAction(""))}}class="block cursor-pointer py-2 px-3 mb-4 rounded shadow-md shadow-gray-500 text-black-500 font-bold font-serif bg-white w-full">
+                  <li onClick ={()=>{dispatch(fetchPostsAction(""))}}class="block cursor-pointer py-2 px-3 mb-4 rounded  shadow-md shadow-gray-500 text-black-500 font-bold font-serif bg-white w-full">
                   View All Posts
                 </li>
                     {catLoading ? (
@@ -85,8 +85,9 @@ export default function PostsList() {
                   </ul>
                 </div>
               </div>
-              <div class="w-full lg:w-3/4 px-7 shadow-md shadow-gray-500">
-                {/* Post goes here */}
+              {/* Post goes here */}
+              <div class="w-full lg:w-3/4 px-7 shadow-inner shadow-gray-500">
+                
 
                 {appErr || serverErr ? (
                   <h1 className="text-black text-lg text-center">
@@ -107,7 +108,7 @@ export default function PostsList() {
                           />
                         </Link>
                         {/* Likes, views dislikes */}
-                        <div className="p-4 flex flex-row bg-gray-300 justify-center w-full  items-center ">
+                        <div className="p-4 -ml-2  flex flex-row bg-gray-300 justify-center w-full  items-center ">
                           {/* Likes */}
                           <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                             {/* Togle like  */}
@@ -145,7 +146,7 @@ export default function PostsList() {
                             {post?.title}
                           </h3>
                         </Link>
-                        <p class="text-black whitespace-normal truncate h-36">{post?.description}.....</p>
+                        <p class="text-black whitespace-normal truncate h-24">{post?.description}.....</p>
                         {/* Read more */}
                         <div className="mt-5">
                               <Link

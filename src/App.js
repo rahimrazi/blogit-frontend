@@ -47,7 +47,7 @@ function App() {
             <Route path="/add-category" element={<AddNewCategory />} />
 
             <Route path="/update-category/:id" element={<UpdateCategory />} />
-            <Route path="/users" element={<UsersList />} />
+            <Route exact path="/users" element={<UsersList />} />
 
           </Route>
           {/* <Route exact path="/add-category" element={<AddNewCategory />} /> */}

@@ -12,6 +12,7 @@ const UsersList = () => {
     const dispatch = useDispatch()
     //data from store
     const users = useSelector(state=>state?.users)
+    console.log("enthada")
     const {usersList,appErr,serverErr,loading,block,unblock} =users
     //fetch all users
     useEffect(()=>{

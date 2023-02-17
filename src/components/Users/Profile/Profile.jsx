@@ -37,7 +37,8 @@ export default function Profile() {
     unFollowed,userAuth
   } = users;
   //fetch user profle
-  
+  console.log("profile",profile)
+ 
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch, followed, unFollowed]);
@@ -78,10 +79,11 @@ export default function Profile() {
     }
   }
     
-    console.log(profile,123)
+    console.log("profile",profile)
   return (
     <>
-      <div className="min-h-screen bg-green-600 items-center">
+    <section className="min-h-screen bg-white">
+      <div className="bg-white ">
         {profileLoading ? (
           <LoadingComponent />
         ) : profileAppErr || profileServerErr ? (
@@ -89,12 +91,12 @@ export default function Profile() {
             {profileServerErr} {profileAppErr}
           </h2>
         ) : (
-          <div className="h-screen flex overflow-hidden bg-white">
+          <div className="h-full flex overflow-hidden bg-gray-200">
             {/* Static sidebar for desktop */}
 
             <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
               <div className="flex-1 relative z-0 flex overflow-hidden">
-                <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+                <main className="flex-1 overflow-y-auto focus:outline-none xl:order-lastt">
                   <article>
                     {/* Profile header */}
                     <div>
@@ -109,14 +111,14 @@ export default function Profile() {
                         <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                           <div className="flex -mt-20">
                             <img
-                              className="h-24 w-24 rounded-full  ring-4 ring-white sm:h-32 sm:w-32"
+                              className="h-25 w-25 rounded-full  ring-4 ring-white sm:h-32 sm:w-32"
                               src={profile?.profilePhoto}
                               alt={profile?.firstName}
                             />
                           </div>
                           <div className="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                             <div className=" flex flex-col 2xl:block mt-10 min-w-0 flex-1">
-                              <h1 className="text-2xl font-bold text-gray-900 ">
+                              <h1 className="text-2xl font-bold text-gray-900 mt-10 ">
                                 {profile?.firstName} {profile?.lastName}
                                 <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
                                   {profile?.accountType}
@@ -132,11 +134,11 @@ export default function Profile() {
                                   </span>
                                 )}
                               </h1>
-                              <p className="m-3 text-lg">
+                              <p className="m-3 font-semibold ml-0">
                                 Date Joined: {""}
                                 <DateFormatter date={profile?.createdAt} />{" "}
                               </p>
-                              <p className="text-green-600 mt-2 mb-2">
+                              <p className="text-blue-600 mt-2 mb-2">
                                 {profile?.posts?.length} posts{" "}
                                 {profile?.followers?.length} followers{" "}
                                 {profile?.following?.length} following
@@ -219,7 +221,7 @@ export default function Profile() {
                                   <span>Update Profile</span>
                                 </Link>}
                               </>
-                              {/* Send Mail */}
+                              {/* Send Chat */}
                               <div
                                 onClick={handleMessage}
                                 className="cursor-pointer inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
@@ -235,11 +237,11 @@ export default function Profile() {
                             </div>
                           </div>
                         </div>
-                        <div className="hidden sm:block 2xl:hidden mt-6 min-w-0 flex-1">
+                        {/* <div className="hidden sm:block 2xl:hidden mt-6 min-w-0 flex-1">
                           <h1 className="text-2xl font-bold text-gray-900 truncate">
                             {profile?.firstName} {profile?.lastName}
                           </h1>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     {/* Tabs */}
@@ -279,16 +281,16 @@ export default function Profile() {
                       </div>
                       {/* All my Post */}
                       <div className="w-full md:w-2/3 px-4 mb-4 md:mb-0">
-                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2">
+                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 ">
                           My Post - {profile?.posts?.length}
                         </h1>
                         {/* Loop here */}
                         {profile?.posts?.length <= 0 ? (
-                          <h2 className="text-center text-xl">No Post Found</h2>
+                          <h2 className="text-center text-xl ">No Post Found</h2>
                         ) : (
                           profile?.posts?.map(post => (
-                            <div className="flex flex-wrap  -mx-3 mt-3  lg:mb-6">
-                              <div className="mb-2   w-full lg:w-1/4 px-3">
+                            <div className="flex flex-wrap   mx-3 mt-3  lg:mb-6 w-full lg:w-3/4 px-7  shadow-md shadow-gray-500">
+                              <div className="mb-2 mt-2  w-full lg:w-1/4 px-3">
                                 <Link>
                                   <img
                                     className="object-cover h-40 rounded"
@@ -329,6 +331,7 @@ export default function Profile() {
           </div>
         )}
       </div>
+      </section>
     </>
   );
 }
