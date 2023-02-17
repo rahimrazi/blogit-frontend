@@ -10,7 +10,7 @@ import {
   BookOpenIcon,
   LogoutIcon,
 } from "@heroicons/react/outline";
-import { PlusIcon } from "@heroicons/react/solid";
+import { DocumentReportIcon, PlusIcon } from "@heroicons/react/solid";
 import { logoutAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch } from "react-redux";
 
@@ -19,9 +19,11 @@ const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Create", href: "/create-post", current: false },
   { name: "Posts", href: "/posts", current: false },
+  { name: "Reported Post", href: "/reported-list", current: false},
   { name: "Authors", href: "/users", current: false },
   { name: "Add Category", href: "/add-category", current: false },
   { name: "Category List", href: "/category-list", current: false },
+  
   { name: "Chats", href: "/chats", current: false }
 ];
 
@@ -39,10 +41,10 @@ const AdminNavbar = ({isLogin}) => {
   const dispatch = useDispatch();
 
   return (
-    <Disclosure as="nav" className="bg-green-800">
+    <Disclosure as="nav" className="bg-white shadow-md shadow-gray-300 sticky top-0 z-50">
       {({ open }) => (
         <>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-1 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
@@ -58,17 +60,19 @@ const AdminNavbar = ({isLogin}) => {
                 </div>
                 <div className="flex-shrink-0 flex items-center">
                   {/* Logo */}
-                  <BookOpenIcon className="h-10 w-10 text-yellow-200" />
+                  <BookOpenIcon className="h-10 w-10 text-yellow-800" />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map(item => (
                     <Link
                       key={item.name}
+                      
                       to={item.href}
+                      type="button"
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-gray-500 text-white hover:bg-gray-700 shadow-lg shadow-gray-300"
+                          : "bg-gray-400 text-white hover:bg-gray-700 hover:text-white shadow-lg shadow-gray-300",
                         "px-3 py-2 rounded-md text-sm font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}

@@ -22,6 +22,7 @@ import AccountVerified from "./components/Users/AccountVerification/AccountVerif
 import UsersList from "./components/Users/UsersList/UsersList";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import ChatPage from "./components/Chat/ChatPage";
+import ReportedPost from "./components/Posts/ReportedPost";
 
 
 
@@ -42,7 +43,7 @@ function App() {
             {/* <Route path="/send-mail" element={<SendEmail />} /> */}
 
             {/* <Route path="/users" element={<UsersList />} /> */}
-            {/* <Route path="/reported-list" element={<ReportedPost />} /> */}
+            <Route path="/reported-list" element={<ReportedPost />} />
 
             <Route path="/add-category" element={<AddNewCategory />} />
 

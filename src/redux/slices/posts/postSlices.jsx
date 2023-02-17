@@ -176,6 +176,79 @@ export const fetchPostDetailAction = createAsyncThunk(
   }
 );
 
+ //Report a post
+
+ export const reportPostAction = createAsyncThunk(
+  "post/report",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts/report-post`,
+        { postId },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+ //-------reported posts list------------
+
+ export const fetchReportedPostAction = createAsyncThunk(
+  "/posts/reported-list", async(id,{ rejectWithValue,getState,dispatch})=>{
+  
+   try {
+     const {data} =await axios.get(`${baseUrl}/api/posts/reported-list`)
+     console.log(data,"data");
+     return data;
+   } catch (error) {
+     if (!error?.response) throw error;
+     return rejectWithValue(error?.response?.data);
+   }
+  }
+)
+
+//Block post
+export const blockPostAction = createAsyncThunk(
+  "post/block",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+
+    try {
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts/block-post`,
+        {postId},
+   
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+
+
+
+
+
+
+
+
+
 
 // slice
 
@@ -338,6 +411,64 @@ builder.addCase(fetchPostDetailAction.rejected,(state,action)=>{
   state.appErr = action?.payload?.message;
   state.serverErr = action?.payload?.message
 })
+
+  //--------------post report
+
+         
+  builder.addCase(reportPostAction.pending, (state,action)=>{
+    state.loading = true;
+})
+
+builder.addCase(reportPostAction.fulfilled, (state,action)=>{
+    state.reports =action?.payload;
+    state.loading = false;
+    state.appErr = undefined;
+    state.serverErr = undefined;
+})
+builder.addCase(reportPostAction.rejected, (state,action)=>{
+    state.loading = false;
+    state.appErr= action?.payload?.message;
+    state.serverErr=action?.error?.message;
+})
+
+
+      //------fetch reported posts-------------------
+
+    builder.addCase(fetchReportedPostAction.pending, (state,action)=>{
+        state.loading = true;
+    })
+  
+    builder.addCase(fetchReportedPostAction.fulfilled, (state,action)=>{
+      console.log(action?.payload,"action");
+      state.reported = true
+      state.reportedList = action?.payload;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    })
+    builder.addCase(fetchReportedPostAction.rejected, (state,action)=>{
+        state.loading = false;
+        state.appErr= action?.payload?.message;
+        state.serverErr=action?.error?.message;
+    })
+      //block - post
+builder.addCase(blockPostAction.pending, (state, action) => {
+state.loading = true;
+state.appErr = undefined;
+state.serverError = undefined;
+});
+builder.addCase(blockPostAction.fulfilled, (state, action) => {
+state.loading = false;
+state.blockPost = action?.payload;
+state.appErr = undefined;
+state.serverError = undefined;
+});
+builder.addCase(blockPostAction.rejected, (state, action) => {
+state.loading = false;
+state.appErr = action?.payload?.message;
+state.serverError = action?.error?.message;
+});
+
 
 }
 })

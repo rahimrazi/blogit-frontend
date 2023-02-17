@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePostAction, fetchPostDetailAction } from "../../redux/slices/posts/postSlices";
+import { deletePostAction, fetchPostDetailAction, reportPostAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComments";
 import CommentsList from "../Comments/CommentsList";
 import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
+import { FlagIcon } from "@heroicons/react/outline";
 
 
 
@@ -91,7 +92,16 @@ if(isDeleted) navigate('/posts/')
                   <button onClick={()=>dispatch(deletePostAction(postDetails?._id))} className="ml-3">
                     <TrashIcon className="h-8 mt-3 text-red-600" />
                   </button>
-                </p>:null}
+                </p>:
+                <div className="flex items-center p-3 mt-4">
+                <FlagIcon
+                  onClick={() => dispatch(reportPostAction(postDetails?._id))}
+                  className="h-6 w-6 text-black-900 cursor-pointer mr-1"
+                />
+                <p className="text-xs text-red-700">
+                  Report - {postDetails?.reports?.length}
+                </p> 
+              </div>}
               </p>
             </div>
           </div>

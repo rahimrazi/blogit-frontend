@@ -5,6 +5,7 @@ import {
   EmojiSadIcon,
   UploadIcon,
   UserIcon,
+  ChatAlt2Icon,
 } from "@heroicons/react/outline";
 
 
@@ -37,8 +38,16 @@ export default function Profile() {
     unFollowed,userAuth
   } = users;
   //fetch user profle
-  console.log("profile",profile)
+  
+//filtering isBlocked false
+const fPosts = profile?.posts
+const filteredPosts = fPosts?.filter(fpost=>!fpost?.isBlocked)
+console.log(filteredPosts)
  
+  
+
+
+
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch, followed, unFollowed]);
@@ -63,14 +72,14 @@ export default function Profile() {
       const userId = profile?._id
       console.log(userId)
       const { data } = await axios.post(`${baseUrl}/api/chat`, { userId }, config);
-      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      if (!chats?.find((c) => c?._id === data?._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       navigate('/chats')
       console.log(data,1231231)
     } catch (error) {
       toast({
         title: "Error fetching the chat",
-        description: error.message,
+        description: error?.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -226,12 +235,12 @@ export default function Profile() {
                                 onClick={handleMessage}
                                 className="cursor-pointer inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                               >
-                                <MailIcon
+                                <ChatAlt2Icon
                                   className="-ml-1 mr-2 h-5 w-5 text-gray-200"
                                   aria-hidden="true"
                                 />
                                 <span className="text-base mr-2  text-bold text-yellow-500">
-                                  Send Message
+                                  Chat
                                 </span>
                               </div>
                             </div>
@@ -288,7 +297,7 @@ export default function Profile() {
                         {profile?.posts?.length <= 0 ? (
                           <h2 className="text-center text-xl ">No Post Found</h2>
                         ) : (
-                          profile?.posts?.map(post => (
+                          filteredPosts?.map(post => (
                             <div className="flex flex-wrap   mx-3 mt-3  lg:mb-6 w-full lg:w-3/4 px-7  shadow-md shadow-gray-500">
                               <div className="mb-2 mt-2  w-full lg:w-1/4 px-3">
                                 <Link>
