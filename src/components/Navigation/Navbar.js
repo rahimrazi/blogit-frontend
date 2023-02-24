@@ -9,7 +9,7 @@ import PublicNavbar from "./Public/PublicNavbar";
 
 const Navbar = () => {
   //get user from store
-  const state = useSelector((state) => state.users);
+  const state = useSelector((state) => state?.users);
 
   const { userAuth,profile } = state;
   

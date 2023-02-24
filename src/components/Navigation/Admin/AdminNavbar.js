@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/outline";
 import { DocumentReportIcon, PlusIcon } from "@heroicons/react/solid";
 import { logoutAction } from "../../../redux/slices/users/usersSlices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const navigation = [
@@ -39,6 +39,9 @@ const AdminNavbar = ({isLogin}) => {
   ];
   //logout
   const dispatch = useDispatch();
+
+  const account = useSelector(state=>state?.users?.profile?.profilePhoto)
+console.log(account,2846872346)
 
   return (
     <Disclosure as="nav" className="bg-white shadow-md shadow-gray-300 sticky top-0 z-50">
@@ -120,7 +123,7 @@ const AdminNavbar = ({isLogin}) => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={isLogin?.profilePhoto}
+                              src={account}
                               alt="Admin Profile"
                             />
                           </Menu.Button>
@@ -187,7 +190,7 @@ const AdminNavbar = ({isLogin}) => {
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
                   {/* Image */}
-                  <img className="h-10 w-10 rounded-full" src={isLogin?.profilePhoto} alt="" />
+                  <img className="h-10 w-10 rounded-full" src={account} alt="" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-white">

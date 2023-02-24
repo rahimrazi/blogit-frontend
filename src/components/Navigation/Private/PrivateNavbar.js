@@ -9,7 +9,7 @@ import {
   BookOpenIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon, LogoutIcon } from "@heroicons/react/solid";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../../redux/slices/users/usersSlices";
 
 
@@ -18,7 +18,7 @@ const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Create", href: "/create-post", current: false },
   { name: "Posts", href: "/posts", current: false },
-  { name: "Authors", href: "/users", current: false },
+  // { name: "Authors", href: "/users", current: false },
   { name: "Profile", href: "/users", current: false },
   { name: "Chats", href: "/chats", current: false }
 ];
@@ -35,8 +35,7 @@ const PrivateNavbar = ({ isLogin }) => {
   ];
   //logout
   const dispatch = useDispatch()
-  
-
+  const account = useSelector(state=>state?.users?.profile?.profilePhoto)
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -112,7 +111,7 @@ const PrivateNavbar = ({ isLogin }) => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={isLogin?.profilePhoto}
+                              src={account}
                               alt=""
                             />
                           </Menu.Button>
@@ -180,7 +179,7 @@ const PrivateNavbar = ({ isLogin }) => {
                 <div className="flex-shrink-0">
                   <img
                     className="h-10 w-10 rounded-full"
-                    src={isLogin.profilePhoto}
+                    src={account}
                     alt=""
                   />
                 </div>

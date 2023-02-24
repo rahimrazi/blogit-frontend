@@ -116,7 +116,7 @@ const UpdateProfileForm = () => {
               </label>
               <div className="mt-1">
                 {/* Email */}
-                <input
+                <input disabled
                   value={formik.values.email}
                   onChange={formik.handleChange("email")}
                   onBlur={formik.handleBlur("email")}
