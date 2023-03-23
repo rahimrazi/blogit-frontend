@@ -4,7 +4,8 @@ import { baseUrl } from "../../../utils/baseURL";
 
 //redirect action
 const resetUserAction = createAction("user/profile/reset");
-
+const resetPasswordAction = createAction("password/reset");
+const resetRegisterAction= createAction("user/register");
 //register action
 
 export const registerUserAction = createAsyncThunk(
@@ -22,6 +23,7 @@ export const registerUserAction = createAsyncThunk(
         user,
         config
       );
+      dispatch(resetRegisterAction())
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -329,6 +331,91 @@ export const fetchUsersAction = createAsyncThunk(
 );
 
 
+//update Password
+export const updatePasswordAction = createAsyncThunk(
+  "password/update",
+  async (password, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.put(
+        `${baseUrl}/api/users/password`,
+        {
+          password
+        },
+        config
+      );
+      //dispatch for redirecting after the password change
+      dispatch(resetPasswordAction())
+
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//password reset token generator
+
+export const passwordResetTokenAction = createAsyncThunk(
+  "password/token",
+  async (email, { rejectWithValue, getState, dispatch }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.post(
+        `${baseUrl}/api/users/forget-password-token`,
+        {email},
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//Password reset
+export const passwordResetAction = createAsyncThunk(
+  "password/reset",
+  async (user, { rejectWithValue, getState, dispatch }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.put(
+        `${baseUrl}/api/users/reset-password`,
+        { password: user?.password, token: user?.token },
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+
 //get user from local storage and place it into store
 const userLoginFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -348,11 +435,16 @@ const usersSlices = createSlice({
       state.appErr = undefined;
       state.serverErr = undefined;
     });
+    builder.addCase(resetRegisterAction, (state, action) => {
+      state.isRegistered = true;
+    })
     builder.addCase(registerUserAction.fulfilled, (state, action) => {
       state.loading = false;
       state.registered = action?.payload;
+      
       state.appErr = undefined;
       state.serverErr = undefined;
+      state.isRegistered = false;
     });
     builder.addCase(registerUserAction.rejected, (state, action) => {
       state.loading = false;
@@ -505,6 +597,67 @@ const usersSlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
     });
+
+    // update password 
+
+     
+     builder.addCase(updatePasswordAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(resetPasswordAction, (state, action) => {
+      state.isPasswordUpdated = true;
+    });
+    builder.addCase(updatePasswordAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.passwordUpdated = action?.payload;
+      state.isPasswordUpdated = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(updatePasswordAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
+    //password reset token generator
+    builder.addCase(passwordResetTokenAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetTokenAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.passwordToken = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetTokenAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
+    //Password reset
+    builder.addCase(passwordResetAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.passwordReset = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+
 
     //upload profile pic
     builder.addCase(uploadProfilePhotoAction.pending, (state, action) => {

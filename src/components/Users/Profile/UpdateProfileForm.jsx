@@ -8,9 +8,9 @@ import { useEffect } from "react";
 
 //Form schema
 const formSchema = Yup.object({
-  firstName: Yup.string().required("First Name is required"),
-  lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string().required("Email is required"),
+  firstName: Yup.string().required("First Name is required").matches(/^[a-zA-Z]{2,}(?:\s+[a-zA-Z]+)*$/, 'Name must contain at least two letters and can only contain letters and spaces'),
+  lastName: Yup.string().required("Last Name is required").matches(/^[a-zA-Z]{2,}(?:\s+[a-zA-Z]+)*$/, 'Name must contain at least two letters and can only contain letters and spaces'),
+  email: Yup.string().required("Email is required").email('Invalid email address'),
   bio: Yup.string().required("Bio is required"),
 });
 

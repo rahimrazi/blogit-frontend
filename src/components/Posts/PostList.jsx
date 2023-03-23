@@ -6,6 +6,7 @@ import { fetchPostsAction, toggleAddDisLikesToPost, toggleAddLikesToPost } from 
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/category/categorySlice";
 import LoadingComponent from "../../utils/LoadingComponent";
+import * as DOMPurify from "dompurify";
 
 
 export default function PostsList() {
@@ -146,7 +147,13 @@ export default function PostsList() {
                             {post?.title}
                           </h3>
                         </Link>
-                        <p class="text-black whitespace-normal truncate h-24">{post?.description}.....</p>
+                        {/* <p class="text-black whitespace-normal truncate h-24">{post?.description}.....</p> */}
+                        <div
+                              className="text-black truncate "
+                              dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(post?.description),
+                              }}
+                            ></div>
                         {/* Read more */}
                         <div className="mt-5">
                               <Link

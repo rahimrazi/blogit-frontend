@@ -74,7 +74,7 @@ export default function CommentsList({ comments }) {
                   </div>
                 </li>
               </div>
-            ))
+            )).reverse()
           )}
         </>
       </ul>

@@ -7,6 +7,7 @@ import {
   fetchAllPostAction,
   fetchPostsAction,
   fetchReportedPostAction,
+  unBlockPostAction,
 } from "../../redux/slices/posts/postSlices";
 
 
@@ -107,6 +108,8 @@ export default function ReportedPost() {
                         {post?.reports?.length>=1 ?
                              post?.isBlocked ? (
                               <button
+                              onClick={() => dispatch(unBlockPostAction(post?.id))}
+                              
                                
                                 className="inline-block py-1 px-2 text-center bg-green-700 text-gray-300 mr-2 mb-1 lg:mb-0 text-xs border rounded"
                               >

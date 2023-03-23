@@ -4,12 +4,12 @@ import * as Yup from "yup";
 import poster from "../../../img/poster.png";
 import { loginUserAction } from "../../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate,useNavigate } from "react-router-dom";
+import { Link, Navigate,useNavigate } from "react-router-dom";
 
 
 //Form schema
 const formSchema = Yup.object({
-  email: Yup.string().required("Email is required"),
+  email: Yup.string().required("Email is required").email('Invalid email address'),
   password: Yup.string().required("Password is required"),
 });
 
@@ -144,6 +144,14 @@ const Login = () => {
                       Login
                     </button>)}
                   </form>
+                  <div className="p-2">
+                  <Link
+                to="/password-reset-token"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot Password ?
+              </Link>
+              </div>
                 </div>
               </div>
               <div className="w-full lg:w-3/5 px-4 mb-16 lg:mb-0 order-first lg:order-last">

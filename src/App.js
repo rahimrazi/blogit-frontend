@@ -23,6 +23,9 @@ import UsersList from "./components/Users/UsersList/UsersList";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import ChatPage from "./components/Chat/ChatPage";
 import ReportedPost from "./components/Posts/ReportedPost";
+import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
+import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
+import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
 
 
 
@@ -130,6 +133,16 @@ function App() {
               
             }
           />
+          <Route
+            path="/update-password"
+            element={
+              <UserProtectedRoute>
+                <UpdatePassword/>
+                </UserProtectedRoute>
+              
+            }
+          />
+          
           
           
           
@@ -137,7 +150,8 @@ function App() {
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-
+          <Route path="/password-reset-token" element={<ResetPasswordForm />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           <Route
             path="/chats"

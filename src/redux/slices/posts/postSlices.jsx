@@ -225,11 +225,17 @@ export const fetchPostDetailAction = createAsyncThunk(
 export const blockPostAction = createAsyncThunk(
   "post/block",
   async (postId, { rejectWithValue, getState, dispatch }) => {
-
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
     try {
       const { data } = await axios.post(
         `${baseUrl}/api/posts/block-post`,
-        {postId},
+        {postId},config
    
       );
       return data;
@@ -240,6 +246,30 @@ export const blockPostAction = createAsyncThunk(
   }
 );
 
+//Block post
+export const unBlockPostAction = createAsyncThunk(
+  "post/unblock",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts//unblock-post`,
+        {postId},config
+   
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 
 
@@ -468,6 +498,25 @@ state.loading = false;
 state.appErr = action?.payload?.message;
 state.serverError = action?.error?.message;
 });
+
+    //unBlock Post
+    
+builder.addCase(unBlockPostAction.pending, (state, action) => {
+  state.loading = true;
+  state.appErr = undefined;
+  state.serverError = undefined;
+  });
+  builder.addCase(unBlockPostAction.fulfilled, (state, action) => {
+  state.loading = false;
+  state.blockPost = action?.payload;
+  state.appErr = undefined;
+  state.serverError = undefined;
+  });
+  builder.addCase(unBlockPostAction.rejected, (state, action) => {
+  state.loading = false;
+  state.appErr = action?.payload?.message;
+  state.serverError = action?.error?.message;
+  });
 
 
 }

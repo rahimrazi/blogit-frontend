@@ -9,6 +9,7 @@ import AddComment from "../Comments/AddComments";
 import CommentsList from "../Comments/CommentsList";
 import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
 import { FlagIcon } from "@heroicons/react/outline";
+import * as DOMPurify from "dompurify";
 
 
 
@@ -82,7 +83,12 @@ if(isDeleted) navigate('/posts/')
             {/* Post description */}
             <div className="max-w-xl mx-auto">
               <p className="mb-6 text-xl text-black-200 text-center">
-                {postDetails?.description}
+                {/* {postDetails?.description} */}
+                <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(postDetails?.description),
+                    }}
+                  ></div>
                 
                 {/* Show delete and update btn if its created by logged in user */}
                 {isCreatedBy?<p className="flex">
